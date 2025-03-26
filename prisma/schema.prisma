@@ -1,0 +1,38 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Fish {
+  id             Int      @id @default(autoincrement())
+  name           String
+  scientificName String
+  image          String?     // URL to the fish image
+  type           String?     // e.g. "Freshwater", "Saltwater", or "Brackish"
+  size           String?     // e.g. "Small (2-3 in)", "Medium (4-6 in)"
+  tankSize       String?     // e.g. "20+ gallons"
+  temperature    String?     // e.g. "72°F - 78°F"
+  ph             String?     // e.g. "6.0 - 7.0"
+  waterHardness  String?     // e.g. "Soft to Medium"
+  swimLevel      String?     // e.g. "Top, Mid, Bottom"
+  aggression     String?     // e.g. "Peaceful", "Semi-aggressive"
+  behavior       String?     // e.g. "Active schooling fish"
+  schooling      String?     // e.g. "Yes" or "No"
+  popularity     String?     // e.g. "High"
+  difficulty     String?     // e.g. "Easy", "Intermediate"
+  lighting       String?     // e.g. "Moderate"
+  food           String?     // e.g. "Omnivore"
+  compatibility  String?     // e.g. "Community"
+  tankMates      String?     // e.g. "Tetras, Guppies"
+  breeding       String?     // e.g. "Egg layer"
+  lifespan       String?     // e.g. "5 years"
+  origin         String?     // e.g. "South America"
+  colorVariants  String?     // e.g. "Blue, Red"
+  careNotes      String?     // e.g. "Needs stable water parameters"
+  notes          String?     // Misc. notes or tips
+  createdAt      DateTime    @default(now())
+}
