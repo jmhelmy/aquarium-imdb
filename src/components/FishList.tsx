@@ -6,21 +6,21 @@ import FishCard from "./FishCard";
 import FilterControls from "./FilterControls";
 
 export type Fish = {
-    id: number;
-    name: string;
-    scientificName: string;
-    image?: string;
-    tankSize?: string;
-    temperature?: string;
-    ph?: string;
-    swimLevel?: string;
-    aggression?: string;
-    behavior?: string;
-    schooling?: string;
-    popularity?: string;
-    difficulty?: string;
-  };
-  
+  id: number;
+  name: string;
+  scientificName: string;
+  image?: string;
+  tankSize?: string;
+  temperature?: string;
+  ph?: string;
+  swimLevel?: string;
+  aggression?: string;
+  behavior?: string;
+  schooling?: string;
+  popularity?: string;
+  difficulty?: string;
+  type?: string;
+};
 
 type FishListProps = { fishList: Fish[] };
 
@@ -29,11 +29,10 @@ export default function FishList({ fishList }: FishListProps) {
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [aggressionFilter, setAggressionFilter] = useState("");
   const [schoolingFilter, setSchoolingFilter] = useState("");
-  const [filteredFish, setFilteredFish] = useState(fishList);
   const [typeFilter, setTypeFilter] = useState("");
   const [tankSizeFilter, setTankSizeFilter] = useState("");
   const [popularityFilter, setPopularityFilter] = useState("");
-
+  const [filteredFish, setFilteredFish] = useState(fishList);
 
   useEffect(() => {
     const lower = search.toLowerCase();
@@ -42,30 +41,25 @@ export default function FishList({ fishList }: FishListProps) {
         (fish.name.toLowerCase().includes(lower) || fish.scientificName.toLowerCase().includes(lower)) &&
         (!difficultyFilter || fish.difficulty === difficultyFilter) &&
         (!aggressionFilter || fish.aggression === aggressionFilter) &&
-        (!schoolingFilter || fish.schooling === schoolingFilter)
+        (!schoolingFilter || fish.schooling === schoolingFilter) &&
+        (!typeFilter || fish.type === typeFilter) &&
+        (!tankSizeFilter || fish.tankSize === tankSizeFilter) &&
+        (!popularityFilter || fish.popularity === popularityFilter)
       ))
     );
-  }, [search, difficultyFilter, aggressionFilter, schoolingFilter, fishList]);
+  }, [search, difficultyFilter, aggressionFilter, schoolingFilter, typeFilter, tankSizeFilter, popularityFilter, fishList]);
 
   return (
     <>
-        <FilterControls
-        search={search}
-        onSearchChange={setSearch}
-        difficulty={difficultyFilter}
-        onDifficultyChange={setDifficultyFilter}
-        aggression={aggressionFilter}
-        onAggressionChange={setAggressionFilter}
-        schooling={schoolingFilter}
-        onSchoolingChange={setSchoolingFilter}
-        type={typeFilter}
-        onTypeChange={setTypeFilter}
-        tankSize={tankSizeFilter}
-        onTankSizeChange={setTankSizeFilter}
-        popularity={popularityFilter}
-        onPopularityChange={setPopularityFilter}
-        />
-
+      <FilterControls
+        search={search} onSearchChange={setSearch}
+        difficulty={difficultyFilter} onDifficultyChange={setDifficultyFilter}
+        aggression={aggressionFilter} onAggressionChange={setAggressionFilter}
+        schooling={schoolingFilter} onSchoolingChange={setSchoolingFilter}
+        type={typeFilter} onTypeChange={setTypeFilter}
+        tankSize={tankSizeFilter} onTankSizeChange={setTankSizeFilter}
+        popularity={popularityFilter} onPopularityChange={setPopularityFilter}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {filteredFish.map(fish => (
