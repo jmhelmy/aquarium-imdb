@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 export default async function Page({ params }: { params: { id: string } }) {
   const fishId = Number(params.id);
   const fish = await prisma.fish.findUnique({ where: { id: fishId } });
-
   if (!fish) return notFound();
 
   return (
@@ -12,10 +11,8 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold mb-4 text-blue-900">{fish.name}</h1>
         <p className="text-xl text-gray-800 mb-4">{fish.scientificName}</p>
-        {fish.image && (
-          <img src={fish.image} alt={fish.name} className="w-full mb-4 rounded" />
-        )}
-        {/* rest of fields… */}
+        {fish.image && <img src={fish.image} alt={fish.name} className="w-full rounded mb-4" />}
+        {/* other fields */}
       </div>
     </main>
   );
