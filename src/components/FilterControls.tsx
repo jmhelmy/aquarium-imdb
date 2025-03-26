@@ -1,21 +1,22 @@
 "use client";
 
 type FilterControlsProps = {
-  search: string;
-  onSearchChange: (val: string) => void;
-  difficulty: string;
-  onDifficultyChange: (val: string) => void;
-  aggression: string;
-  onAggressionChange: (val: string) => void;
-  schooling: string;
-  onSchoolingChange: (val: string) => void;
-  type: string;
-  onTypeChange: (val: string) => void;
-  tankSize: string;
-  onTankSizeChange: (val: string) => void;
-  popularity: string;
-  onPopularityChange: (val: string) => void;
-};
+    search: string;
+    onSearchChange: (val: string) => void;
+    difficulty: string;
+    onDifficultyChange: (val: string) => void;
+    aggression: string;
+    onAggressionChange: (val: string) => void;
+    schooling: string;
+    onSchoolingChange: (val: string) => void;
+    type: string;
+    onTypeChange: (val: string) => void;
+    tankSize: string;
+    onTankSizeChange: (val: string) => void;
+    popularity: string;
+    onPopularityChange: (val: string) => void;
+  };
+  
 
 export default function FilterControls({
   search, onSearchChange,
