@@ -5,7 +5,22 @@ import Link from "next/link";
 import FishCard from "./FishCard";
 import FilterControls from "./FilterControls";
 
-export type Fish = { /* …same as before… */ };
+export type Fish = {
+    id: number;
+    name: string;
+    scientificName: string;
+    image?: string;
+    tankSize?: string;
+    temperature?: string;
+    ph?: string;
+    swimLevel?: string;
+    aggression?: string;
+    behavior?: string;
+    schooling?: string;
+    popularity?: string;
+    difficulty?: string;
+  };
+  
 
 type FishListProps = { fishList: Fish[] };
 
