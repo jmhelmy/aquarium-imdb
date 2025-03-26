@@ -6,18 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare": "prisma generate",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "csv-parser": "^3.2.0",
     "next": "15.2.4",
-    "prisma": "^6.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsx": "^4.19.3"
   },
   "devDependencies": {
+    "prisma": "^6.5.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
