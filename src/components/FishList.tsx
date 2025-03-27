@@ -39,7 +39,7 @@ export default function FishList({ fishList }: FishListProps) {
   useEffect(() => {
     const lower = search.toLowerCase();
 
-    let filtered = fishList.filter(fish => (
+    const filtered = fishList.filter(fish => (
       (fish.name.toLowerCase().includes(lower) || fish.scientificName.toLowerCase().includes(lower)) &&
       (!difficultyFilter || fish.difficulty === difficultyFilter) &&
       (!aggressionFilter || fish.aggression === aggressionFilter) &&
