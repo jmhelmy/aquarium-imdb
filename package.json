@@ -2,13 +2,14 @@
   "name": "aquarium-imdb-tailwind",
   "version": "0.1.0",
   "private": true,
- "scripts": {
+"scripts": {
   "dev": "next dev",
-  "build": "prisma generate && next build",
+  "build": "next build",
   "start": "next start",
-  "postinstall": "prisma generate"
-},
-
+  "postinstall": "prisma generate",
+  "seed": "tsx prisma/seed.ts"
+}
+,
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "csv-parser": "^3.2.0",
@@ -18,7 +19,6 @@
     "tsx": "^4.19.3"
   },
   "devDependencies": {
-    "prisma": "^6.5.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -26,7 +26,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "prisma": "^6.5.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
