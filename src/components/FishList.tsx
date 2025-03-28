@@ -25,6 +25,7 @@ export type Fish = {
 type FishListProps = { fishList: Fish[] };
 
 export default function FishList({ fishList }: FishListProps) {
+  console.log("Sample fish:", fishList[0]);
   const [search, setSearch] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [aggressionFilter, setAggressionFilter] = useState("");
