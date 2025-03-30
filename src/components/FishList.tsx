@@ -10,7 +10,7 @@ export type Fish = {
   name: string;
   scientificName: string;
   featuredImage?: string;  // Changed from image to featuredImage
-  tankSize?: string;
+  minimumTankSize?: string;
   temperature?: string;
   ph?: string;
   swimLevel?: string;
@@ -32,7 +32,7 @@ export default function FishList({ fishList }: FishListProps) {
   const [aggressionFilter, setAggressionFilter] = useState("");
   const [schoolingFilter, setSchoolingFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [tankSizeFilter, setTankSizeFilter] = useState("");
+  const [minimumTankSizeFilter, setMinimumTankSizeFilter] = useState("");
   const [popularityFilter, setPopularityFilter] = useState("");
   const [sortOption, setSortOption] = useState("name");
 
@@ -47,7 +47,7 @@ export default function FishList({ fishList }: FishListProps) {
       (!aggressionFilter || fish.aggression === aggressionFilter) &&
       (!schoolingFilter || fish.schooling === schoolingFilter) &&
       (!typeFilter || fish.type === typeFilter) &&
-      (!tankSizeFilter || fish.tankSize === tankSizeFilter) &&
+      (!minimumTankSizeFilter || fish.minimumTankSize === minimumTankSizeFilter) &&
       (!popularityFilter || fish.popularity === popularityFilter)
     ));
 
@@ -62,8 +62,15 @@ export default function FishList({ fishList }: FishListProps) {
 
     setFilteredFish(filtered);
   }, [
-    search, difficultyFilter, aggressionFilter, schoolingFilter,
-    typeFilter, tankSizeFilter, popularityFilter, sortOption, fishList
+    search,
+    difficultyFilter,
+    aggressionFilter,
+    schoolingFilter,
+    typeFilter,
+    minimumTankSizeFilter,
+    popularityFilter,
+    sortOption,
+    fishList,
   ]);
 
   return (
@@ -82,18 +89,25 @@ export default function FishList({ fishList }: FishListProps) {
 
       {/* Filters */}
       <FilterControls
-        search={search} onSearchChange={setSearch}
-        difficulty={difficultyFilter} onDifficultyChange={setDifficultyFilter}
-        aggression={aggressionFilter} onAggressionChange={setAggressionFilter}
-        schooling={schoolingFilter} onSchoolingChange={setSchoolingFilter}
-        type={typeFilter} onTypeChange={setTypeFilter}
-        tankSize={tankSizeFilter} onTankSizeChange={setTankSizeFilter}
-        popularity={popularityFilter} onPopularityChange={setPopularityFilter}
+        search={search}
+        onSearchChange={setSearch}
+        difficulty={difficultyFilter}
+        onDifficultyChange={setDifficultyFilter}
+        aggression={aggressionFilter}
+        onAggressionChange={setAggressionFilter}
+        schooling={schoolingFilter}
+        onSchoolingChange={setSchoolingFilter}
+        type={typeFilter}
+        onTypeChange={setTypeFilter}
+        minimumTankSize={minimumTankSizeFilter}
+        onMinimumTankSizeChange={setMinimumTankSizeFilter}
+        popularity={popularityFilter}
+        onPopularityChange={setPopularityFilter}
       />
 
       {/* Fish Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredFish.map(fish => (
+        {filteredFish.map((fish) => (
           // Use the fish.slug for dynamic routing.
           <Link key={fish.id} href={`/fish/${fish.slug}`}>
             <FishCard {...fish} />

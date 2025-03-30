@@ -8,40 +8,40 @@ datasource db {
 }
 
 model Fish {
-  id             Int      @id @default(autoincrement())
-  name           String
-  scientificName String
-  featuredImage  String?
-  type           String?
-  size           String?
-  tankSize       String?
-  temperature    String?
-  ph             String?
-  waterHardness  String?
-  swimLevel      String?
-  aggression     String?
-  behavior       String?
-  schooling      String?
-  popularity     String?
-  difficulty     String?
-  lighting       String?
-  food           String?
-  compatibility  String?
-  tankMates      String?
-  breeding       String?
-  lifespan       String?
-  origin         String?
-  colorVariants  String?
-  careNotes      String?
-  notes          String?
-  createdAt      DateTime @default(now())
-  slug           String?  @unique
-  images         Image[]
+  id              Int      @id @default(autoincrement())
+  name            String
+  scientificName  String
+  featuredImage   String?
+  type            String?
+  size            String?
+  minimumTankSize String?
+  temperature     String?
+  ph              String?
+  waterHardness   String?
+  swimLevel       String?
+  aggression      String?
+  behavior        String?
+  schooling       String?
+  popularity      String?
+  difficulty      String?
+  lighting        String?
+  food            String?
+  compatibility   String?
+  tankMates       String?
+  breeding        String?
+  lifespan        String?
+  origin          String?
+  colorVariants   String?
+  careNotes       String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  slug            String?  @unique
+  Image           Image[]
 }
 
 model Image {
   id     Int    @id @default(autoincrement())
   url    String
   fishId Int
-  fish   Fish   @relation(fields: [fishId], references: [id])
+  Fish   Fish   @relation(fields: [fishId], references: [id])
 }

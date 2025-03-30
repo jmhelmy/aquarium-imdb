@@ -12,7 +12,7 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
   const fieldList = [
     { label: "Type", value: fish.type },
     { label: "Size", value: fish.size },
-    { label: "Tank Size", value: fish.tankSize },
+    { label: "Minimum Tank Size", value: fish.minimumTankSize },
     { label: "Temperature", value: fish.temperature },
     { label: "pH", value: fish.ph },
     { label: "Water Hardness", value: fish.waterHardness },
