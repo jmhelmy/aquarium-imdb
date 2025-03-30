@@ -9,7 +9,7 @@ export type Fish = {
   id: number;
   name: string;
   scientificName: string;
-  image?: string;
+  featuredImage?: string;  // Changed from image to featuredImage
   tankSize?: string;
   temperature?: string;
   ph?: string;
@@ -20,6 +20,7 @@ export type Fish = {
   popularity?: string;
   difficulty?: string;
   type?: string;
+  slug: string;            // New field used for routing and dynamic gallery
 };
 
 type FishListProps = { fishList: Fish[] };
@@ -93,7 +94,8 @@ export default function FishList({ fishList }: FishListProps) {
       {/* Fish Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {filteredFish.map(fish => (
-          <Link key={fish.id} href={`/fish/${fish.id}`}>
+          // Use the fish.slug for dynamic routing.
+          <Link key={fish.id} href={`/fish/${fish.slug}`}>
             <FishCard {...fish} />
           </Link>
         ))}

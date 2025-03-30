@@ -21,7 +21,10 @@ async function main() {
           data: {
             name: fish.name,
             scientificName: fish.scientificName,
-            image: fish.image,
+            featuredImage: `https://aquarium-fish-images.s3.us-east-2.amazonaws.com/fish_dataset/${fish.name
+              .toLowerCase()
+              .replace(/\s+/g, "_")}/000001.jpg`,
+            slug: fish.name.toLowerCase().replace(/\s+/g, "_"),
             type: fish.type,
             size: fish.size,
             tankSize: fish.tankSize,

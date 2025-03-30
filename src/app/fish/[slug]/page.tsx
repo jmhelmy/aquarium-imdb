@@ -3,9 +3,9 @@ export const dynamic = "force-dynamic";
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
 
-export default async function FishDetailPage({ params }: { params: { id: string } }) {
-  const fishId = Number(params.id);
-  const fish = await prisma.fish.findUnique({ where: { id: fishId } });
+export default async function FishDetailPage({ params }: { params: { slug: string } }) {
+  const slug = params.slug;
+  const fish = await prisma.fish.findUnique({ where: { slug } });
 
   if (!fish) return notFound();
 
@@ -40,9 +40,9 @@ export default async function FishDetailPage({ params }: { params: { id: string 
         <h1 className="text-4xl font-bold mb-4 text-blue-900">{fish.name}</h1>
         <p className="text-xl text-gray-800 mb-4">{fish.scientificName}</p>
 
-        {fish.image && (
+        {fish.featuredImage && (
           <img
-            src={fish.image}
+            src={fish.featuredImage}
             alt={fish.name}
             className="w-full h-auto mb-4 object-cover rounded"
           />
