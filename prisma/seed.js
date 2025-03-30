@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Clear existing fish
-  await prisma.fish.deleteMany();
-
+  await prisma.comment.deleteMany(); // 🧼 Delete comments first
+  await prisma.fish.deleteMany();    // Then delete fish
   const results = [];
 
   fs.createReadStream("freshwater_fish_with_corydoras_and_glofish.csv")
