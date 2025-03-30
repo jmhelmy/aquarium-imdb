@@ -6,26 +6,27 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const content = formData.get("content");
-    const fishId = formData.get("fishId");
+    const content = formData.get("content") as string;
+    const fishId = parseInt(formData.get("fishId") as string, 10);
 
     console.log("Form data received:", { content, fishId });
 
-    if (!content || !fishId) {
+    if (!content || isNaN(fishId)) {
       return NextResponse.json(
-        { error: "Missing content or fishId" },
+        { error: "Missing content or invalid fishId" },
         { status: 400 }
       );
     }
 
-    const newComment = await prisma.comment.create({
+    await prisma.comment.create({
       data: {
-        content: String(content),
-        fishId: parseInt(String(fishId)),
+        content,
+        fishId,
       },
     });
 
-    return NextResponse.redirect(req.headers.get("referer") || "/");
+    return NextResponse.json({ success: true }, { status: 201 });
+
   } catch (error) {
     console.error("Error saving comment:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

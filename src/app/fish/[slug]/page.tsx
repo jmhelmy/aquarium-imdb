@@ -66,7 +66,7 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
 
         <ul className="mt-4 mb-6">
           {fish.comments?.length > 0 ? (
-            fish.comments.map((comment: any) => (
+          fish.comments.map((comment: { id: number; content: string }) => (
               <li key={comment.id} className="border border-gray-300 p-3 mb-2 rounded bg-white shadow-sm text-gray-800">
                 {comment.content}
               </li>
