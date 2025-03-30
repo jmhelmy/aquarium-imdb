@@ -11,8 +11,8 @@ type FilterControlsProps = {
   onSchoolingChange: (val: string) => void;
   type: string;
   onTypeChange: (val: string) => void;
-  tankSize: string;
-  onTankSizeChange: (val: string) => void;
+  minimumTankSize: string;
+  onMinimumTankSizeChange: (val: string) => void;
   popularity: string;
   onPopularityChange: (val: string) => void;
 };
@@ -28,8 +28,8 @@ export default function FilterControls({
   onSchoolingChange,
   type,
   onTypeChange,
-  tankSize,
-  onTankSizeChange,
+  minimumTankSize,
+  onMinimumTankSizeChange,
   popularity,
   onPopularityChange,
 }: FilterControlsProps) {
@@ -38,14 +38,14 @@ export default function FilterControls({
       <input
         type="text"
         value={search}
-        onChange={e => onSearchChange(e.target.value)}
+        onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Search fish..."
         className="px-4 py-2 border rounded bg-white text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-400"
       />
 
       <select
         value={difficulty}
-        onChange={e => onDifficultyChange(e.target.value)}
+        onChange={(e) => onDifficultyChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Difficulty</option>
@@ -56,7 +56,7 @@ export default function FilterControls({
 
       <select
         value={aggression}
-        onChange={e => onAggressionChange(e.target.value)}
+        onChange={(e) => onAggressionChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Aggression</option>
@@ -67,7 +67,7 @@ export default function FilterControls({
 
       <select
         value={schooling}
-        onChange={e => onSchoolingChange(e.target.value)}
+        onChange={(e) => onSchoolingChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Schooling</option>
@@ -77,7 +77,7 @@ export default function FilterControls({
 
       <select
         value={type}
-        onChange={e => onTypeChange(e.target.value)}
+        onChange={(e) => onTypeChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Types</option>
@@ -86,8 +86,8 @@ export default function FilterControls({
       </select>
 
       <select
-        value={tankSize}
-        onChange={e => onTankSizeChange(e.target.value)}
+        value={minimumTankSize}
+        onChange={(e) => onMinimumTankSizeChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Tank Sizes</option>
@@ -98,7 +98,7 @@ export default function FilterControls({
 
       <select
         value={popularity}
-        onChange={e => onPopularityChange(e.target.value)}
+        onChange={(e) => onPopularityChange(e.target.value)}
         className="px-4 py-2 border rounded bg-white text-gray-800 focus:ring-2 focus:ring-blue-400"
       >
         <option value="">All Popularities</option>
