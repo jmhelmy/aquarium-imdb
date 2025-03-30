@@ -37,7 +37,18 @@ model Fish {
   createdAt       DateTime @default(now())
   slug            String?  @unique
   Image           Image[]
+  comments        Comment[]  // ✅ Add this line
+
 }
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  fish      Fish     @relation(fields: [fishId], references: [id])
+  fishId    Int
+}
+
 
 model Image {
   id     Int    @id @default(autoincrement())
