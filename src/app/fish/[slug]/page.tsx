@@ -6,12 +6,21 @@ import { notFound } from "next/navigation";
 export default async function FishDetailPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
 
-  const fish = await prisma.fish.findUnique({
-    where: { slug },
-    include: { comments: true }, // ✅ Include comments
-  });
+  let fish = null;
+  try {
+    fish = await prisma.fish.findUnique({
+      where: { slug },
+      include: { Comment: true }, // 🔁 use `Comment`, not `comments`
+    });
+  } catch (error) {
+    console.error("❌ Error fetching fish in detail page:", error);
+  }
+  
 
   if (!fish) return notFound();
+
+  // Debug: log fetched fish data
+  console.log("Fish detail data:", fish);
 
   const fieldList = [
     { label: "Type", value: fish.type },
@@ -61,13 +70,15 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
             )
         )}
 
-        {/* 🔵 Comments Section */}
+        {/* Comments Section */}
         <h2 className="text-2xl font-bold mt-10 text-blue-900">Comments</h2>
-
         <ul className="mt-4 mb-6">
           {fish.comments?.length > 0 ? (
-          fish.comments.map((comment: { id: number; content: string }) => (
-              <li key={comment.id} className="border border-gray-300 p-3 mb-2 rounded bg-white shadow-sm text-gray-800">
+            fish.comments.map((comment: { id: number; content: string }) => (
+              <li
+                key={comment.id}
+                className="border border-gray-300 p-3 mb-2 rounded bg-white shadow-sm text-gray-800"
+              >
                 {comment.content}
               </li>
             ))
@@ -76,7 +87,7 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
           )}
         </ul>
 
-        {/* 🔵 Comment Form */}
+        {/* Comment Form */}
         <form
           className="bg-white p-4 rounded shadow-md"
           action="/api/comments"
