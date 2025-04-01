@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import FishCard from "./FishCard";
 import FilterControls from "./FilterControls";
+import { getGalleryUrls } from "@/utils/getGalleryUrls";
 
 export type Fish = {
   id: number;
   name: string;
   scientificName: string;
-  featuredImage?: string;  // Changed from image to featuredImage
+  featuredImage?: string;
   minimumTankSize?: string;
   temperature?: string;
   ph?: string;
@@ -20,7 +21,7 @@ export type Fish = {
   popularity?: string;
   difficulty?: string;
   type?: string;
-  slug: string;            // New field used for routing and dynamic gallery
+  slug: string;
 };
 
 type FishListProps = { fishList: Fish[] };
@@ -42,7 +43,8 @@ export default function FishList({ fishList }: FishListProps) {
     const lower = search.toLowerCase();
 
     const filtered = fishList.filter(fish => (
-      (fish.name.toLowerCase().includes(lower) || fish.scientificName.toLowerCase().includes(lower)) &&
+      (fish.name.toLowerCase().includes(lower) ||
+        fish.scientificName.toLowerCase().includes(lower)) &&
       (!difficultyFilter || fish.difficulty === difficultyFilter) &&
       (!aggressionFilter || fish.aggression === aggressionFilter) &&
       (!schoolingFilter || fish.schooling === schoolingFilter) &&
@@ -107,12 +109,16 @@ export default function FishList({ fishList }: FishListProps) {
 
       {/* Fish Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredFish.map((fish) => (
-          // Use the fish.slug for dynamic routing.
-          <Link key={fish.id} href={`/fish/${fish.slug}`}>
-            <FishCard {...fish} />
-          </Link>
-        ))}
+        {filteredFish.map((fish) => {
+          // Instead of using fish.featuredImage from the database,
+          // generate the URL for "000001.jpg" from the S3 folder.
+          const homepageFeatured = getGalleryUrls(fish.slug, 1)[0];
+          return (
+            <Link key={fish.id} href={`/fish/${fish.slug}`}>
+              <FishCard {...fish} featuredImage={homepageFeatured} />
+            </Link>
+          );
+        })}
       </div>
     </>
   );

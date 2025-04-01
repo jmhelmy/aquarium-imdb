@@ -3,7 +3,7 @@
 type FishCardProps = {
   id?: number;
   name: string;
-  featuredImage?: string; // Changed from 'image' to 'featuredImage'
+  featuredImage?: string; // This will be overridden by the homepage prop.
   minimumTankSize?: string;
   temperature?: string;
   ph?: string;
@@ -30,7 +30,7 @@ export default function FishCard({
   schooling,
   popularity,
   difficulty,
-}: FishCardProps) { 
+}: FishCardProps) {
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 p-4">
       <img
@@ -43,7 +43,11 @@ export default function FishCard({
         }}
       />
       <h2 className="text-2xl font-bold text-blue-900 mb-2">{name}</h2>
-      {minimumTankSize && <p className="text-lg text-gray-700">Minimum Tank Size: {minimumTankSize}</p>}
+      {minimumTankSize && (
+        <p className="text-lg text-gray-700">
+          Minimum Tank Size: {minimumTankSize}
+        </p>
+      )}
       {temperature && <p className="text-lg text-gray-700">Temperature: {temperature}</p>}
       {ph && <p className="text-lg text-gray-700">pH: {ph}</p>}
       {swimLevel && <p className="text-lg text-gray-700">Swim Level: {swimLevel}</p>}
