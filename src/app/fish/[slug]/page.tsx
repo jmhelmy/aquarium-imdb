@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
+import { getGalleryUrls } from "@/utils/getGalleryUrls";
+import Gallery from "@/components/Gallery";
 
 export default async function FishDetailPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
@@ -10,17 +12,19 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
   try {
     fish = await prisma.fish.findUnique({
       where: { slug },
-      include: { Comment: true }, // 🔁 use `Comment`, not `comments`
+      include: { Comment: true },
     });
   } catch (error) {
     console.error("❌ Error fetching fish in detail page:", error);
   }
-  
 
   if (!fish) return notFound();
 
-  // Debug: log fetched fish data
   console.log("Fish detail data:", fish);
+
+  // Generate 30 image URLs based on the fish slug.
+  // For example, if the slug is "black_skirt_tetra", the utility converts it to "Black_Skirt_Tetra" and builds URLs accordingly.
+  const imageUrls = getGalleryUrls(fish.slug, 30);
 
   const fieldList = [
     { label: "Type", value: fish.type },
@@ -53,14 +57,19 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
         <h1 className="text-4xl font-bold mb-4 text-blue-900">{fish.name}</h1>
         <p className="text-xl text-gray-800 mb-4">{fish.scientificName}</p>
 
-        {fish.featuredImage && (
+        {fish.featuredImage ? (
           <img
             src={fish.featuredImage}
             alt={fish.name}
             className="w-full h-auto mb-4 object-cover rounded"
           />
+        ) : (
+          <div className="w-full h-64 bg-gray-300 mb-4 flex items-center justify-center">
+            <span className="text-gray-700">No Featured Image</span>
+          </div>
         )}
 
+        {/* Render fish fields */}
         {fieldList.map(
           (field) =>
             field.value && (
@@ -70,11 +79,17 @@ export default async function FishDetailPage({ params }: { params: { slug: strin
             )
         )}
 
+        {/* Image Gallery */}
+        <section className="my-8">
+          <h3 className="text-xl font-semibold text-blue-800 mb-2">Image Gallery</h3>
+          <Gallery imageUrls={imageUrls} fishName={fish.name} />
+        </section>
+
         {/* Comments Section */}
         <h2 className="text-2xl font-bold mt-10 text-blue-900">Comments</h2>
         <ul className="mt-4 mb-6">
-          {fish.comments?.length > 0 ? (
-            fish.comments.map((comment: { id: number; content: string }) => (
+          {fish.Comment?.length > 0 ? (
+            fish.Comment.map((comment: { id: number; content: string }) => (
               <li
                 key={comment.id}
                 className="border border-gray-300 p-3 mb-2 rounded bg-white shadow-sm text-gray-800"
