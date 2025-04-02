@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
-import { getGalleryUrls } from "@/utils/getgalleryurls";
+import { getGalleryUrls } from "@/utils/getGalleryUrls";
 import Gallery from "@/components/Gallery";
 
 export default async function FishDetailPage({ params }: { params: { slug: string } }) {
