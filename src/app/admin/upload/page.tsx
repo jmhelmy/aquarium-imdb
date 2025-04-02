@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function UploadPage() {
   const [csvData, setCsvData] = useState<string[][]>([]);
@@ -17,7 +17,7 @@ export default function UploadPage() {
       .map((row) => row.trim())
       .filter(Boolean)
       .map((row) => row.split(','));
-
+    console.log("Parsed CSV rows:", rows);
     setCsvData(rows);
   };
 
@@ -25,24 +25,35 @@ export default function UploadPage() {
     if (csvData.length < 2) return; // no data
 
     setIsImporting(true);
+    console.log("Starting CSV import...");
 
     const [header, ...rows] = csvData;
-
     const body = rows.map((row) =>
       Object.fromEntries(header.map((key, i) => [key.trim(), row[i]?.trim() ?? '']))
     );
+    console.log("Payload to send:", body);
 
-    const res = await fetch('/api/import-csv', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: body }),
-    });
+    try {
+      const res = await fetch('/api/import-csv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: body }),
+      });
+      console.log("Fetch response status:", res.status);
 
-    if (res.ok) {
-      setImportSuccess(true);
+      if (res.ok) {
+        const json = await res.json();
+        console.log("Response JSON:", json);
+        setImportSuccess(true);
+      } else {
+        const err = await res.text();
+        console.error("Import failed with status", res.status, "and message:", err);
+      }
+    } catch (error) {
+      console.error("Error during CSV import fetch:", error);
+    } finally {
+      setIsImporting(false);
     }
-
-    setIsImporting(false);
   };
 
   return (
