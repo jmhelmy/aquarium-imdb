@@ -1,4 +1,7 @@
 export function getGalleryUrls(slug: string, count: number): string[] {
+  // Guard clause: if slug is null, undefined, or an empty string, return an empty array.
+  if (!slug) return [];
+
   let folderName = "";
   if (slug.includes("-")) {
     // If the slug is in kebab-case (e.g., "neon-tetra")
