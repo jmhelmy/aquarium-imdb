@@ -9,7 +9,7 @@ interface CSVRow {
   featuredImage?: string;
   type?: string;
   size?: string;
-  tankSize?: string;
+  minimumTankSize?: string;
   temperature?: string;
   ph?: string;
   waterHardness?: string;
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       featuredImage: row.featuredImage || null,
       type: row.type || null,
       size: row.size || null,
-      tankSize: row.tankSize || null,
+      minimumTankSize: row.minimumTankSize || null,
       temperature: row.temperature || null,
       ph: row.ph || null,
       waterHardness: row.waterHardness || null,
