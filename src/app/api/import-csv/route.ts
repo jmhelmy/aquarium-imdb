@@ -2,14 +2,45 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma'; // Ensure you have a prisma client set up
 
+// Define an interface for a CSV row matching your expected fields.
+interface CSVRow {
+  name: string;
+  scientificName: string;
+  featuredImage?: string;
+  type?: string;
+  size?: string;
+  tankSize?: string;
+  temperature?: string;
+  ph?: string;
+  waterHardness?: string;
+  swimLevel?: string;
+  aggression?: string;
+  behavior?: string;
+  schooling?: string;
+  popularity?: string;
+  difficulty?: string;
+  lighting?: string;
+  food?: string;
+  compatibility?: string;
+  tankMates?: string;
+  breeding?: string;
+  lifespan?: string;
+  origin?: string;
+  colorVariants?: string;
+  careNotes?: string;
+  notes?: string;
+  slug?: string;
+}
+
 export async function POST(request: Request) {
   try {
-    // Parse the JSON body from the request
-    const { data } = await request.json();
+    // Parse the JSON body, expecting an object with a 'data' property that is an array of CSVRow.
+    const { data } = await request.json() as { data: CSVRow[] };
+
     console.log("Received CSV data:", data);
 
-    // Map CSV rows to the Prisma model format
-    const insertData = data.map((row: any) => ({
+    // Map CSV rows to the Prisma model format.
+    const insertData = data.map((row: CSVRow) => ({
       name: row.name,
       scientificName: row.scientificName,
       featuredImage: row.featuredImage || null,
@@ -40,7 +71,7 @@ export async function POST(request: Request) {
 
     console.log("Inserting data:", insertData);
 
-    // Insert into the database using bulk insert
+    // Insert the data using Prisma's bulk insert method.
     const result = await prisma.fish.createMany({
       data: insertData,
       skipDuplicates: true,
