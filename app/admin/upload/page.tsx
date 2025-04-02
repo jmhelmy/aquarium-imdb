@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 export default function UploadPage() {
-  const [file, setFile] = useState<File | null>(null);
   const [csvData, setCsvData] = useState<string[][]>([]);
   const [isImporting, setIsImporting] = useState(false);
   const [importSuccess, setImportSuccess] = useState(false);
@@ -11,8 +10,6 @@ export default function UploadPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
     if (!uploadedFile) return;
-
-    setFile(uploadedFile);
 
     const text = await uploadedFile.text();
     const rows = text
