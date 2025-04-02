@@ -1,24 +1,28 @@
 'use client';
 
 import { useState } from "react";
+import Papa from "papaparse";
 
 export default function UploadPage() {
   const [csvData, setCsvData] = useState<string[][]>([]);
   const [isImporting, setIsImporting] = useState(false);
   const [importSuccess, setImportSuccess] = useState(false);
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = e.target.files?.[0];
-    if (!uploadedFile) return;
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const text = await uploadedFile.text();
-    const rows = text
-      .split('\n')
-      .map((row) => row.trim())
-      .filter(Boolean)
-      .map((row) => row.split(','));
-    console.log("Parsed CSV rows:", rows);
-    setCsvData(rows);
+    Papa.parse(file, {
+      header: false, // set to false to get an array of arrays
+      skipEmptyLines: true,
+      complete: (results) => {
+        console.log("Parsed CSV results:", results.data);
+        setCsvData(results.data as string[][]);
+      },
+      error: (err) => {
+        console.error("CSV Parse Error:", err);
+      },
+    });
   };
 
   const handleImport = async () => {

@@ -27,7 +27,6 @@ export type Fish = {
 type FishListProps = { fishList: Fish[] };
 
 export default function FishList({ fishList }: FishListProps) {
-  console.log("Sample fish:", fishList[0]);
   const [search, setSearch] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [aggressionFilter, setAggressionFilter] = useState("");
@@ -42,24 +41,38 @@ export default function FishList({ fishList }: FishListProps) {
   useEffect(() => {
     const lower = search.toLowerCase();
 
-    const filtered = fishList.filter(fish => (
-      (fish.name.toLowerCase().includes(lower) ||
-        fish.scientificName.toLowerCase().includes(lower)) &&
-      (!difficultyFilter || fish.difficulty === difficultyFilter) &&
-      (!aggressionFilter || fish.aggression === aggressionFilter) &&
-      (!schoolingFilter || fish.schooling === schoolingFilter) &&
-      (!typeFilter || fish.type === typeFilter) &&
-      (!minimumTankSizeFilter || fish.minimumTankSize === minimumTankSizeFilter) &&
-      (!popularityFilter || fish.popularity === popularityFilter)
-    ));
+    const filtered = fishList.filter((fish) => {
+      const matchesSearch =
+        fish.name.toLowerCase().includes(lower) ||
+        fish.scientificName.toLowerCase().includes(lower);
+
+      const matchesDifficulty = !difficultyFilter || fish.difficulty === difficultyFilter;
+      const matchesAggression = !aggressionFilter || fish.aggression === aggressionFilter;
+      const matchesSchooling = !schoolingFilter || fish.schooling === schoolingFilter;
+      const matchesType = !typeFilter || fish.type === typeFilter;
+      const matchesTankSize = !minimumTankSizeFilter || fish.minimumTankSize === minimumTankSizeFilter;
+      const matchesPopularity = !popularityFilter || fish.popularity === popularityFilter;
+
+      return (
+        matchesSearch &&
+        matchesDifficulty &&
+        matchesAggression &&
+        matchesSchooling &&
+        matchesType &&
+        matchesTankSize &&
+        matchesPopularity
+      );
+    });
 
     if (sortOption === "name") {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortOption === "popularity") {
-      filtered.sort((a, b) => {
-        const popularityOrder = { High: 3, Medium: 2, Low: 1 };
-        return (popularityOrder[b.popularity || ""] || 0) - (popularityOrder[a.popularity || ""] || 0);
-      });
+      const popularityOrder = { High: 3, Medium: 2, Low: 1 };
+      filtered.sort(
+        (a, b) =>
+          (popularityOrder[b.popularity || ""] || 0) -
+          (popularityOrder[a.popularity || ""] || 0)
+      );
     }
 
     setFilteredFish(filtered);
@@ -108,19 +121,23 @@ export default function FishList({ fishList }: FishListProps) {
       />
 
       {/* Fish Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredFish.map((fish) => {
-          // Instead of using fish.featuredImage from the database,
-          // generate the URL for "000001.jpg" from the S3 folder.
-          const urls = getGalleryUrls(fish.slug, 1);
-          const homepageFeatured = urls && urls.length > 0 ? urls[0] : '/fallback-image.jpg';
-                    return (
-            <Link key={fish.id} href={`/fish/${fish.slug}`}>
-              <FishCard {...fish} featuredImage={homepageFeatured} />
-            </Link>
-          );
-        })}
-      </div>
+      {filteredFish.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {filteredFish.map((fish) => {
+            // Generate the URL for the fish image from your gallery
+            const urls = getGalleryUrls(fish.slug, 1);
+            const homepageFeatured = urls && urls.length > 0 ? urls[0] : "/fallback-image.jpg";
+
+            return (
+              <Link key={fish.id} href={`/fish/${fish.slug}`}>
+                <FishCard {...fish} featuredImage={homepageFeatured} />
+              </Link>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="text-center">No fish found.</p>
+      )}
     </>
   );
 }
