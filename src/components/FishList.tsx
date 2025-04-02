@@ -112,8 +112,9 @@ export default function FishList({ fishList }: FishListProps) {
         {filteredFish.map((fish) => {
           // Instead of using fish.featuredImage from the database,
           // generate the URL for "000001.jpg" from the S3 folder.
-          const homepageFeatured = getGalleryUrls(fish.slug, 1)[0];
-          return (
+          const urls = getGalleryUrls(fish.slug, 1);
+          const homepageFeatured = urls && urls.length > 0 ? urls[0] : '/fallback-image.jpg';
+                    return (
             <Link key={fish.id} href={`/fish/${fish.slug}`}>
               <FishCard {...fish} featuredImage={homepageFeatured} />
             </Link>
