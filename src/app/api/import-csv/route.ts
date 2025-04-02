@@ -1,46 +1,56 @@
+// src/app/api/import-csv/route.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma'; // Ensure you have a prisma client set up
 
-export async function POST(req: Request) {
-  const { data } = await req.json();
-
+export async function POST(request: Request) {
   try {
-    for (const item of data) {
-      await prisma.fish.create({
-        data: {
-          name: item.name,
-          scientificName: item.scientificName,
-          featuredImage: item.featuredImage || null,
-          type: item.type || null,
-          size: item.size || null,
-          minimumTankSize: item.minimumTankSize || null,
-          temperature: item.temperature || null,
-          ph: item.ph || null,
-          waterHardness: item.waterHardness || null,
-          swimLevel: item.swimLevel || null,
-          aggression: item.aggression || null,
-          behavior: item.behavior || null,
-          schooling: item.schooling || null,
-          popularity: item.popularity || null,
-          difficulty: item.difficulty || null,
-          lighting: item.lighting || null,
-          food: item.food || null,
-          compatibility: item.compatibility || null,
-          tankMates: item.tankMates || null,
-          breeding: item.breeding || null,
-          lifespan: item.lifespan || null,
-          origin: item.origin || null,
-          colorVariants: item.colorVariants || null,
-          careNotes: item.careNotes || null,
-          notes: item.notes || null,
-          slug: item.slug || null,
-        },
-      });
-    }
+    // Parse the JSON body from the request
+    const { data } = await request.json();
+    console.log("Received CSV data:", data);
 
-    return NextResponse.json({ success: true });
+    // Map CSV rows to the Prisma model format
+    const insertData = data.map((row: any) => ({
+      name: row.name,
+      scientificName: row.scientificName,
+      featuredImage: row.featuredImage || null,
+      type: row.type || null,
+      size: row.size || null,
+      tankSize: row.tankSize || null,
+      temperature: row.temperature || null,
+      ph: row.ph || null,
+      waterHardness: row.waterHardness || null,
+      swimLevel: row.swimLevel || null,
+      aggression: row.aggression || null,
+      behavior: row.behavior || null,
+      schooling: row.schooling || null,
+      popularity: row.popularity || null,
+      difficulty: row.difficulty || null,
+      lighting: row.lighting || null,
+      food: row.food || null,
+      compatibility: row.compatibility || null,
+      tankMates: row.tankMates || null,
+      breeding: row.breeding || null,
+      lifespan: row.lifespan || null,
+      origin: row.origin || null,
+      colorVariants: row.colorVariants || null,
+      careNotes: row.careNotes || null,
+      notes: row.notes || null,
+      slug: row.slug || null,
+    }));
+
+    console.log("Inserting data:", insertData);
+
+    // Insert into the database using bulk insert
+    const result = await prisma.fish.createMany({
+      data: insertData,
+      skipDuplicates: true,
+    });
+
+    console.log("Insert result:", result);
+
+    return NextResponse.json({ message: 'CSV data imported successfully' }, { status: 200 });
   } catch (error) {
-    console.error('Error importing fish:', error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    console.error('Error importing CSV data:', error);
+    return NextResponse.json({ error: 'Failed to import CSV data' }, { status: 500 });
   }
 }
